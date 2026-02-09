@@ -1,82 +1,114 @@
-document.addEventListener('DOMContentLoaded', () => {
+// On utilise window.onload au lieu de DOMContentLoaded pour être sûr 
+// que TOUS les scripts externes (GSAP, Lenis) sont 100% chargés.
+window.onload = function() {
     
-    // --- 1. SETUP LENIS (Smooth Scroll) ---
-    const lenis = new Lenis();
+    console.log("✅ Page et Scripts chargés.");
 
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
+    // --- 1. SETUP LENIS (Avec sécurité) ---
+    try {
+        // On vérifie si Lenis est bien là
+        if (typeof Lenis !== 'undefined') {
+            const lenis = new Lenis();
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+            console.log("✅ Scroll Fluide activé.");
+        } else {
+            console.warn("⚠️ Lenis n'a pas chargé (problème CDN), mais le site continue.");
+        }
+    } catch (error) {
+        console.error("Erreur Lenis ignorée pour ne pas bloquer l'intro:", error);
     }
-    requestAnimationFrame(raf);
 
-    // --- 2. INTRO SEQUENCE ---
+    // --- 2. INTRO SÉQUENCE ---
     const introOverlay = document.getElementById('intro-overlay');
     const counter = document.getElementById('counter');
     const wakeBtn = document.getElementById('wake-btn');
     const mainContent = document.getElementById('main-content');
     const loaderContent = document.querySelector('.loader-content');
 
-    // Bloquer le scroll au début
+    // Vérification de sécurité
+    if (!introOverlay || !counter) {
+        console.error("❌ ERREUR HTML : Il manque des ID (intro-overlay ou counter).");
+        return; 
+    }
+
+    // Bloquer le scroll
     document.body.style.overflow = 'hidden';
 
-    // Animation Compteur (Vanilla JS + GSAP)
+    // Compteur avec GSAP
     let countObj = { val: 0 };
     
+    // Si GSAP n'est pas chargé, on force l'affichage (fallback)
+    if (typeof gsap === 'undefined') {
+        alert("GSAP ne charge pas. Vérifie ta connexion internet.");
+        introOverlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        mainContent.style.opacity = 1;
+        return;
+    }
+
     gsap.to(countObj, {
-        val: 99,
+        val: 100,
         duration: 2.5,
-        ease: "power1.inOut",
+        ease: "power2.inOut",
         onUpdate: () => {
             counter.innerText = Math.round(countObj.val);
         },
         onComplete: () => {
-            // Afficher le bouton quand c'est fini
+            // Animation d'apparition du bouton
             gsap.to(loaderContent, { y: -20, duration: 0.5 });
-            wakeBtn.style.display = 'block';
-            gsap.from(wakeBtn, { opacity: 0, y: 10, duration: 0.5 });
+            if(wakeBtn) {
+                wakeBtn.style.display = 'block';
+                gsap.from(wakeBtn, { opacity: 0, y: 10, duration: 0.5 });
+            }
         }
     });
 
-    // Clic sur le bouton WAKE UP
-    wakeBtn.addEventListener('click', () => {
-        
-        // Effet CRT (Ecrasement)
-        gsap.to(introOverlay, {
-            scaleY: 0.005,
-            scaleX: 1,
-            duration: 0.2,
-            ease: "power2.in",
-            onComplete: () => {
-                // Ligne blanche
-                introOverlay.style.background = '#FFFFFF';
-                introOverlay.innerHTML = ''; // Vide le contenu
-                
-                gsap.to(introOverlay, {
-                    scaleX: 0,
-                    duration: 0.1,
-                    delay: 0.1,
-                    onComplete: () => {
-                        introOverlay.style.display = 'none';
-                        document.body.style.overflow = ''; // Réactiver scroll
-                        
-                        // Apparition du site
-                        mainContent.style.opacity = 1;
-                        gsap.from("h1", { y: 50, opacity: 0, duration: 1, delay: 0.2 });
-                        
-                        // Lancer le typewriter
-                        startTypewriter();
-                    }
-                });
-            }
-        });
-    });
+    // Clic sur le bouton
+    if (wakeBtn) {
+        wakeBtn.addEventListener('click', () => {
+            const tl = gsap.timeline();
 
-    // --- 3. TYPEWRITER EFFECT ---
+            tl.to(introOverlay, {
+                scaleY: 0.005,
+                scaleX: 1,
+                duration: 0.2,
+                ease: "power2.in"
+            })
+            .to(introOverlay, {
+                width: "100%",
+                height: "2px",
+                background: "#FFFFFF",
+                duration: 0.1,
+                onStart: () => { introOverlay.innerHTML = ''; }
+            })
+            .to(introOverlay, {
+                scaleX: 0,
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => {
+                    introOverlay.style.display = 'none';
+                    document.body.style.overflow = ''; 
+                    mainContent.style.opacity = 1;
+                    
+                    // Lancer les autres anims
+                    gsap.from("h1", { y: 50, opacity: 0, duration: 1 });
+                    startTypewriter();
+                }
+            });
+        });
+    }
+
+    // --- 3. TYPEWRITER ---
     function startTypewriter() {
         const text = "Je code, je filme et je crée.";
         const container = document.getElementById('typewriter');
-        let i = 0;
+        if(!container) return;
         
+        let i = 0;
         function type() {
             if (i < text.length) {
                 container.innerHTML += text.charAt(i);
@@ -86,50 +118,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         type();
     }
-
-    // --- 4. KONAMI CODE (EASTER EGG) ---
-    const code = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-    let cursor = 0;
-    const easterEggDiv = document.getElementById('easter-egg');
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === code[cursor]) {
-            cursor++;
-        } else {
-            cursor = 0; // Reset si erreur
-        }
-
-        if (cursor === code.length) {
-            triggerEasterEgg();
-            cursor = 0;
-        }
-    });
-
-    function triggerEasterEgg() {
-        easterEggDiv.style.display = 'flex';
-        // Cache le message après 3 secondes
-        setTimeout(() => {
-            easterEggDiv.style.display = 'none';
-        }, 3000);
-    }
     
-    // --- 5. ANIMATIONS AU SCROLL (GSAP ScrollTrigger) ---
-    // Enregistrer le plugin
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Animer les sections quand elles entrent dans la vue
-    const sections = document.querySelectorAll('.section');
-    sections.forEach(section => {
-        gsap.from(section, {
-            scrollTrigger: {
-                trigger: section,
-                start: "top 80%", // Démarre quand le haut de la section est à 80% du bas de l'écran
-            },
-            y: 50,
-            opacity: 0,
-            duration: 1,
-            ease: "power2.out"
+    // --- 4. SCROLL TRIGGER ---
+    if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+        const sections = document.querySelectorAll('.section');
+        sections.forEach(section => {
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 85%",
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power2.out"
+            });
         });
-    });
-
-});
+    }
+};
