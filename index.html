@@ -40,7 +40,7 @@
         <div class="egg-content">
             <span class="emoji">👾</span>
             <h2>KONAMI CODE ACTIVATED</h2>
-            <p>Full Stack Dev Mode: UNLOCKED</p>
+            <p>GOD MODE: ENABLED</p> 
         </div>
     </div>
 
@@ -204,50 +204,72 @@
 		</section>
 
         <!-- Compétences (Stats RPG) -->
+		<!-- ARSENAL (Inventaire RPG) -->
 		<section class="section skills">
 			<div class="container">
 				<h2 class="section-title center">03. ARSENAL_</h2>
-				<div class="rpg-box">
+				
+				<!-- Conteneur style "Inventaire de jeu" -->
+				<div class="inventory-grid">
 					
-					<!-- Vidéo : Ton cœur de métier -->
-					<div class="stat-row">
-						<div class="stat-info">
-							<span class="highlight">VIDÉO & MOTION</span>
-							<span>LVL. 90</span>
-						</div>
-						<div class="stat-bar-bg">
-							<div class="stat-bar-fill highlight-bg" style="width: 90%;"></div>
-						</div>
-						<div class="mini-tags" style="margin-top:5px; font-size: 0.8rem; color:#666;">
-							Premiere Pro • After Effects • Pilotage Drone • DaVinci
-						</div>
-					</div>
-
-					<!-- Com & Design -->
-					<div class="stat-row">
-						<div class="stat-info">
-							<span class="pink">COMMUNICATION & DESIGN</span>
-							<span>LVL. 85</span>
-						</div>
-						<div class="stat-bar-bg">
-							<div class="stat-bar-fill pink-bg" style="width: 85%;"></div>
-						</div>
-						 <div class="mini-tags" style="margin-top:5px; font-size: 0.8rem; color:#666;">
-							Stratégie • Rédaction • Photoshop • Illustrator • Canva
+					<!-- BLOC 1 : LOGICIELS (Les outils) -->
+					<div class="inv-category">
+						<h3 class="inv-title"><span class="highlight">></span> LOGICIELS</h3>
+						<div class="inv-items">
+							<!-- Vidéo -->
+							<div class="inv-item">Premiere Pro</div>
+							<div class="inv-item">After Effects</div>
+							<div class="inv-item">DaVinci Resolve</div>
+							<div class="inv-item">Blender (3D)</div>
+							<!-- Graphisme -->
+							<div class="inv-item">Photoshop</div>
+							<div class="inv-item">Illustrator</div>
+							<div class="inv-item">InDesign</div>
+							<!-- Web/Bureautique -->
+							<div class="inv-item">WordPress</div>
+							<div class="inv-item">Office 365</div>
 						</div>
 					</div>
 
-					<!-- Web : En bonus / Culture générale -->
-					<div class="stat-row">
-						<div class="stat-info">
-							<span class="accent">CULTURE WEB & CMS</span>
-							<span>LVL. 60</span>
+					<!-- BLOC 2 : COMPÉTENCES (Savoir-faire) -->
+					<div class="inv-category">
+						<h3 class="inv-title"><span class="accent">></span> HARD SKILLS</h3>
+						<ul class="pixel-list">
+							<li>Montage & Étalonnage</li>
+							<li>Pilotage Drone (Vue aérienne)</li>
+							<li>Motion Design & VFX</li>
+							<li>Prise de vue Caméra</li>
+							<li>Identité Visuelle & Print</li>
+							<li>Rédaction Web & SEO</li>
+						</ul>
+					</div>
+
+					<!-- BLOC 3 : SAVOIR-ÊTRE (Soft Skills - Le lien Pompier/Ingé) -->
+					<div class="inv-category">
+						<h3 class="inv-title"><span class="pink">></span> HUMAIN</h3>
+						<ul class="pixel-list">
+							<li>Gestion du stress <span class="comment">// Exp. Pompier</span></li>
+							<li>Esprit d'équipe</li>
+							<li>Rigueur scientifique <span class="comment">// Exp. INSA</span></li>
+							<li>Autonomie & Adaptabilité</li>
+							<li>Curiosité technique</li>
+						</ul>
+					</div>
+
+					<!-- BLOC 4 : STATUS (Langues & Permis) -->
+					<div class="inv-category status-box">
+						<h3 class="inv-title">> STATUS</h3>
+						<div class="status-row">
+							<span class="label">LANGUE:</span>
+							<span class="value">Anglais (C1 - Courant)</span>
 						</div>
-						<div class="stat-bar-bg">
-							<div class="stat-bar-fill accent-bg" style="width: 60%;"></div>
+						<div class="status-row">
+							<span class="label">LANGUE:</span>
+							<span class="value">Français (Natif)</span>
 						</div>
-						<div class="mini-tags" style="margin-top:5px; font-size: 0.8rem; color:#666;">
-							WordPress • Compréhension HTML/CSS • Gestion de projet Web
+						<div class="status-row">
+							<span class="label">MOBILITÉ:</span>
+							<span class="value highlight">Permis B + Véhicule</span>
 						</div>
 					</div>
 
@@ -345,9 +367,42 @@
         </section>
 
     </main>
+		<!-- BARRE KONAMI (Manette Virtuelle) -->
+		
+	
+	<div id="konami-bar">
+		<div class="hint-wrapper">
+			<div class="hint-text">
+				<span class="pixel-blink">█</span> INSERT CHEAT CODE :
+			</div>
+			<!-- L'antisèche (Gribouillis) -->
+			<div class="cheat-sheet">
+				↑ ↑ ↓ ↓ ← → ← → B A
+			</div>
+		</div>
+		
+		<div class="controller-pad">
+			<!-- Flèches -->
+			<div class="d-pad">
+				<button class="k-btn arrow" data-key="ArrowUp">▲</button>
+				<div class="d-row">
+					<button class="k-btn arrow" data-key="ArrowLeft">◀</button>
+					<button class="k-btn arrow" data-key="ArrowDown">▼</button>
+					<button class="k-btn arrow" data-key="ArrowRight">▶</button>
+				</div>
+			</div>
+
+			<!-- Boutons AB -->
+			<div class="action-btns">
+				<button class="k-btn circle b-btn" data-key="b">B</button>
+				<button class="k-btn circle a-btn" data-key="a">A</button>
+			</div>
+		</div>
+	</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-    <script src="script.js"></script>
+	<script src="script.js"></script>
+    <script src="konami.js"></script>
 </body>
 </html>
